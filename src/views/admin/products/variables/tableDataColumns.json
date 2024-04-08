@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Marmiteira H1",
+    "balance": 12,
+    "min": 5
+  },
+  {
+    "name": "Batata Palha",
+    "balance": 1,
+    "min": 5
+  },
+  {
+    "name": "Creme culinário",
+    "balance": 1,
+    "min": 5
+  },
+  {
+    "name": "Marmiteira H2",
+    "balance": 1,
+    "min": 5
+  }
+]

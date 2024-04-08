@@ -1,0 +1,50 @@
+[
+  {
+    "product": "Batata Palha",
+    "quantity": 8,
+    "date": "01.Fev.2024",
+    "type": "entrada",
+    "balance": 8,
+    "price": 3.55
+  },
+  {
+    "product": "Marmiteira H1",
+    "quantity": 200,
+    "date": "13.Mar.2021",
+    "type": "entrada",
+    "balance": 200,
+    "price": 0.23
+  },
+  {
+    "product": "Batata Palha",
+    "quantity": 1,
+    "date": "21.Feb.2021",
+    "type": "saida",
+    "balance": 7,
+    "price": null
+  },
+  {
+    "product": "Marmiteira H1",
+    "quantity": 27,
+    "date": "24.Jan.2021",
+    "type": "saida",
+    "balance": 173,
+    "price": null
+  },
+  {
+    "product": "Marmiteira H1",
+    "quantity": 18,
+    "date": "24.Jan.2021",
+    "type": "saida",
+    "balance": 155,
+    "price": null
+  },
+  {
+    "product": "Marmiteira H1",
+    "quantity": 31,
+    "date": "24.Jan.2021",
+    "type": "saida",
+    "balance": 124,
+    "price": null
+  }
+]
