@@ -55,8 +55,9 @@ export default function ListProductTable(props) {
 			w="100%"
 			px="0px"
 			overflowX={{ sm: "scroll", lg: "hidden" }}
-		>
-			<Flex px="25px" justify="space-between" mb="20px" align="center">
+			>
+			<Flex px="25px" justify="space-between" mb="20px" align="start" gap='16px'>
+			{/* <DrawerRegister /> */}
 				<Input placeholder="Nome do produto" />
 				<Menu />
 			</Flex>

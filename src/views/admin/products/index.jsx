@@ -22,13 +22,7 @@
 
 // Chakra imports
 import {
-	Card,
 	Box,
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbSeparator,
-	Divider,
 } from "@chakra-ui/react";
 import { columnsDataColumns } from "views/admin/products/variables/columnsData";
 import React, { useEffect, useState } from "react";
