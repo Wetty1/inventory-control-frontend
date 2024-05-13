@@ -23,6 +23,7 @@ import { columnsDataColumns } from "views/admin/movements/variables/columnsData"
 import tableDataColumns from "views/admin/movements/variables/tableDataColumns.json";
 import { useEffect, useState } from "react";
 import api from "api/index";
+import { dollarToBRL } from "utils/DollarToBRL";
 
 export default function ProductDetail({ product, setProductSelected }) {
 	const brandColor = useColorModeValue("brand.500", "white");
@@ -82,7 +83,7 @@ export default function ProductDetail({ product, setProductSelected }) {
 						/>
 					}
 					name="Ultimo custo"
-					value={product?.last_price}
+					value={dollarToBRL(product?.last_price)}
 				/>
 				<MiniStatistics
 					startContent={

@@ -7,8 +7,8 @@ import {
 	Th,
 	Thead,
 	Tr,
-	Button,
 	useColorModeValue,
+	Input,
 } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import {
@@ -21,33 +21,10 @@ import {
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
-import { dollarToBRL } from "utils/DollarToBRL";
+export default function ListProductTable(props) {
+	const { columnsData, tableData, setProductSelected } = props;
 
-const columnsDataColumns = [
-	{
-		Header: "TIPO",
-		accessor: "type",
-	},
-	{
-		Header: "QUANTIDADE",
-		accessor: "quantity",
-	},
-	{
-		Header: "PREÇO/UN.",
-		accessor: "price",
-	},
-	{
-		Header: "DATE",
-		accessor: "date",
-	},
-];
-
-export default function ExtractProductDetail(props) {
-	const { tableData } = props;
-
-	console.log(tableData);
-
-	const columns = columnsDataColumns;
+	const columns = useMemo(() => columnsData, [columnsData]);
 	const data = useMemo(() => tableData, [tableData]);
 
 	const tableInstance = useTable(
@@ -80,14 +57,7 @@ export default function ExtractProductDetail(props) {
 			overflowX={{ sm: "scroll", lg: "hidden" }}
 		>
 			<Flex px="25px" justify="space-between" mb="20px" align="center">
-				<Text
-					color={textColor}
-					fontSize="22px"
-					fontWeight="700"
-					lineHeight="100%"
-				>
-					Geral
-				</Text>
+				<Input placeholder="Nome do produto" />
 				<Menu />
 			</Flex>
 			<Table
@@ -124,21 +94,34 @@ export default function ExtractProductDetail(props) {
 				<Tbody {...getTableBodyProps()}>
 					{page.map((row, index) => {
 						prepareRow(row);
-						let valueColor =
-							row.cells[0].value === "entrada"
-								? "green.400"
-								: "red.400";
-						console.log(row);
 						return (
 							<Tr {...row.getRowProps()} key={index}>
 								{row.cells.map((cell, index) => {
 									let data = "";
-									if (cell.column.Header === "TIPO") {
+									if (cell.column.Header === "NOME") {
+										data = (
+											<Flex align="center">
+												<Text
+													color={textColor}
+													fontSize="sm"
+													fontWeight="700"
+													cursor={"pointer"}
+													onClick={() =>
+														setProductSelected(
+															row.original
+														)
+													}
+												>
+													{cell.value}
+												</Text>
+											</Flex>
+										);
+									} else if (cell.column.Header === "SALDO") {
 										data = (
 											<Flex align="center">
 												<Text
 													me="10px"
-													color={valueColor}
+													color={textColor}
 													fontSize="sm"
 													fontWeight="700"
 												>
@@ -147,30 +130,8 @@ export default function ExtractProductDetail(props) {
 											</Flex>
 										);
 									} else if (
-										cell.column.Header === "QUANTIDADE"
+										cell.column.Header === "MINIMO"
 									) {
-										data = (
-											<Text
-												color={valueColor}
-												fontSize="sm"
-												fontWeight="700"
-											>
-												{cell.value}
-											</Text>
-										);
-									} else if (cell.column.Header === "DATE") {
-										data = (
-											<Text
-												color={textColor}
-												fontSize="sm"
-												fontWeight="700"
-											>
-												{new Date(
-													cell.value
-												).toLocaleDateString("pt-br")}
-											</Text>
-										);
-									} else if (cell.column.Header === "SALDO") {
 										data = (
 											<Text
 												color={textColor}
@@ -181,22 +142,34 @@ export default function ExtractProductDetail(props) {
 											</Text>
 										);
 									} else if (
-										cell.column.Header === "PREÇO/UN."
+										cell.column.Header === "ULTIMO PRECO"
 									) {
 										data = (
-											<Text
-												color={textColor}
-												fontSize="sm"
-												fontWeight="700"
-											>
-												{row.original.purchase
-													? `${dollarToBRL(
-															row.original
-																.purchase
-																.unit_value
-													  )}`
-													: "-"}
-											</Text>
+											<Flex align="center">
+												<Text
+													me="10px"
+													color={textColor}
+													fontSize="sm"
+													fontWeight="700"
+												>
+													{cell.value}
+												</Text>
+											</Flex>
+										);
+									} else if (
+										cell.column.Header === "CATEGORIA"
+									) {
+										data = (
+											<Flex align="center">
+												<Text
+													me="10px"
+													color={textColor}
+													fontSize="sm"
+													fontWeight="700"
+												>
+													{cell.value}
+												</Text>
+											</Flex>
 										);
 									}
 									return (
