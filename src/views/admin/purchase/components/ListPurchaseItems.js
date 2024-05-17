@@ -10,10 +10,8 @@ import {
 	useColorModeValue,
 	Input,
 	Button,
-	SelectField,
-	Select,
 } from "@chakra-ui/react";
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
 	useGlobalFilter,
 	usePagination,
@@ -24,10 +22,8 @@ import {
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
-import { MdAdd, MdAddShoppingCart, MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
-
-import Context from "../context/PurchaseContext";
 
 const columnsDataColumns = [
 	{
@@ -35,29 +31,32 @@ const columnsDataColumns = [
 		accessor: "id",
 	},
 	{
-		Header: "DATA",
-		accessor: "date",
+		Header: "PRODUTO",
+		accessor: "product",
 	},
 	{
-		Header: "FORNECEDOR",
-		accessor: "supplier",
+		Header: "QUANTIDADE",
+		accessor: "quantity",
 	},
 	{
-		Header: "TOTAL",
-		accessor: "total_value",
+		Header: "VALOR UNIDADE",
+		accessor: "unitValue",
+	},
+	{
+		Header: "VALOR TOTAL",
+		accessor: "totalValue",
 	},
 	{
 		Header: "AÇÕES",
 	},
 ];
-export default function ListPurchaseTable(props) {
-	const { tableData } = props;
+export default function ListPurchaseItemTable(props) {
+	const { tableData, setProductSelected } = props;
 
 	const columnsData = columnsDataColumns;
 
 	const columns = useMemo(() => columnsData, [columnsData]);
 	const data = useMemo(() => tableData, [tableData]);
-	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
 
 	const tableInstance = useTable(
 		{
@@ -88,23 +87,6 @@ export default function ListPurchaseTable(props) {
 			px="0px"
 			overflowX={{ sm: "scroll", lg: "hidden" }}
 		>
-			<Flex px="25px" justify="space-between" mb="20px" align="center">
-				<Select px="5px" placeholder="Fornecedor">
-					<option>Center Box</option>
-				</Select>
-				<Select px="5px" placeholder="Período">
-					<option value={1}>1 Dia</option>
-					<option value={2}>1 Semana</option>
-					<option value={3}>1 Mês</option>
-				</Select>
-				<Select px="5px" placeholder="Ordem">
-					<option>Crescente</option>
-					<option>Decrescente</option>
-				</Select>
-				<Button px="5px">
-					<MdAddShoppingCart />
-				</Button>
-			</Flex>
 			<Table
 				{...getTableProps()}
 				variant="simple"
@@ -147,7 +129,7 @@ export default function ListPurchaseTable(props) {
 							>
 								{row.cells.map((cell, index) => {
 									let data = "";
-									if (cell.column.Header === "DATA") {
+									if (cell.column.Header === "QUANTIDADE") {
 										data = (
 											<Flex align="center">
 												<Text
@@ -161,7 +143,7 @@ export default function ListPurchaseTable(props) {
 											</Flex>
 										);
 									} else if (
-										cell.column.Header === "FORNECEDOR"
+										cell.column.Header === "PRODUTO"
 									) {
 										data = (
 											<Flex align="center">
@@ -175,14 +157,40 @@ export default function ListPurchaseTable(props) {
 												</Text>
 											</Flex>
 										);
-									} else if (cell.column.Header === "TOTAL") {
+									} else if (
+										cell.column.Header === "VALOR TOTAL"
+									) {
 										data = (
 											<Text
 												color={textColor}
 												fontSize="sm"
 												fontWeight="700"
 											>
-												{cell.value}
+												{cell.value.toLocaleString(
+													"pt-br",
+													{
+														style: "currency",
+														currency: "BRL",
+													}
+												)}
+											</Text>
+										);
+									} else if (
+										cell.column.Header === "VALOR UNIDADE"
+									) {
+										data = (
+											<Text
+												color={textColor}
+												fontSize="sm"
+												fontWeight="700"
+											>
+												{cell.value.toLocaleString(
+													"pt-br",
+													{
+														style: "currency",
+														currency: "BRL",
+													}
+												)}
 											</Text>
 										);
 									} else if (cell.column.Header === "ID") {
@@ -201,14 +209,8 @@ export default function ListPurchaseTable(props) {
 									} else if (cell.column.Header === "AÇÕES") {
 										data = (
 											<Flex align="center">
-												<Button
-													onClick={() =>
-														setPurchaseSelected(
-															row.original.id
-														)
-													}
-												>
-													<IoMdEye />
+												<Button>
+													<MdEdit />
 												</Button>
 											</Flex>
 										);

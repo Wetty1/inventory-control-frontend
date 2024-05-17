@@ -18,6 +18,7 @@ import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
 import Movements from "views/admin/movements";
 import Products from "views/admin/products";
+import Purchase from "views/admin/purchase";
 
 import RTL from "views/admin/rtl";
 
@@ -98,7 +99,7 @@ const routes = [
 				color="inherit"
 			/>
 		),
-		component: Profile,
+		component: Purchase,
 	},
 	{
 		name: "Receita",

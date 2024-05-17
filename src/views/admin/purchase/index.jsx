@@ -30,33 +30,44 @@ import {
 	BreadcrumbSeparator,
 	Divider,
 } from "@chakra-ui/react";
-import { columnsDataColumns } from "views/admin/purchase/variables/columnsData";
 import React, { useEffect, useState } from "react";
-import ProductDetail from "./components/ProductDetail";
 import api from "api/index";
-import ListProductTable from "./components/ListProductTable";
+import ListPurchaseTable from "./components/ListPurchaseTable";
+import PurchaseDetail from "./components/PurchaseDetail";
+import Context from "./context/PurchaseContext";
 
 export default function Settings() {
-	const [productSelected, setProductSelected] = useState("");
-	const [products, setProducts] = useState([]);
+	const [purchaseSelected, setPurchaseSelected] = useState(null);
+	const [purchases, setPurchases] = useState([
+		{
+			id: 1,
+			supplier: "Mix Mateus",
+			date: "01.01.2021",
+			total_value: 10.99,
+		},
+	]);
+
 	// Chakra Color Mode
 	useEffect(() => {
-		api.get(`/stock/products/list`)
-			.then((response) => {
-				let datas = response.data;
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		// api.get(`/stock/products/list`)
+		// 	.then((response) => {
+		// 		let datas = response.data;
+		// 	})
+		// 	.catch((error) => {
+		// 		console.log(error);
+		// 	});
 	}, []);
 
 	return (
-		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-			<ListProductTable
-				columnsData={columnsDataColumns}
-				tableData={products}
-				setProductSelected={setProductSelected}
-			/>
-		</Box>
+		<Context.Provider value={[purchaseSelected, setPurchaseSelected]}>
+			{!purchaseSelected && (
+				<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+					<ListPurchaseTable tableData={purchases} />
+				</Box>
+			)}
+			{purchaseSelected && (
+				<PurchaseDetail purchaseId={purchaseSelected.id} />
+			)}
+		</Context.Provider>
 	);
 }
