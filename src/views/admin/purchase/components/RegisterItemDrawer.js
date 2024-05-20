@@ -14,12 +14,13 @@ import {
 	useColorModeValue,
 	Select,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { MdAddShoppingCart } from "react-icons/md";
+import Context from "../context/PurchaseContext";
 
 const schema = yup.object({
 	quantity: yup.number().required("Campo obrigatório"),
@@ -32,12 +33,15 @@ export default function RegisterItemDrawer() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = useRef();
 
+	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
+
 	const [item, setItem] = useState({});
 
-	const [quantity, setQuantity] = useState(1);
-	const [price, setPrice] = useState(0);
+	// const [quantity, setQuantity] = useState(1);
+	// const [price, setPrice] = useState(0);
 
 	const {
+		watch,
 		register,
 		handleSubmit,
 		formState: { errors },
@@ -45,7 +49,22 @@ export default function RegisterItemDrawer() {
 		resolver: yupResolver(schema),
 	});
 
-	const onSubmit = (data) => console.log(data);
+	const quantity = watch("quantity");
+	const price = watch("unitprice");
+
+	const onSubmit = (data) => {
+		let a = purchaseSelected;
+		a.items.push({
+			id: Math.random() * 100,
+			quantity: data.quantity,
+			unitValue: data.unitprice,
+			totalValue: data.unitprice * data.quantity,
+		});
+
+		setPurchaseSelected(a);
+		onClose();
+		// console.log(purchaseSelected);
+	};
 
 	return (
 		<>
@@ -66,19 +85,22 @@ export default function RegisterItemDrawer() {
 
 						<DrawerBody>
 							<FormLabel htmlFor="product">Produto</FormLabel>
-							<Select px="5px" placeholder="Produto">
-								<option>Center Box</option>
+							<Select
+								px="5px"
+								placeholder="Produto"
+								{...register("product")}
+							>
+								<option value="Açucar nakamoto">
+									Açúcar Nakamoto
+								</option>
 							</Select>
 
 							<FormLabel htmlFor="quantity">Quantidade</FormLabel>
 							<Input
 								id="quantity"
 								placeholder="Quantidade"
+								defaultValue={1}
 								color={textColor}
-								onChange={(e) => {
-									console.log(e);
-									setQuantity(e);
-								}}
 								{...register("quantity")}
 							/>
 							<Text color="tomato">
@@ -91,11 +113,8 @@ export default function RegisterItemDrawer() {
 							<Input
 								id="unitprice"
 								placeholder="Preço Unitário"
+								defaultValue={0}
 								color={textColor}
-								onChange={(e) => {
-									console.log(e);
-									setPrice(e.target.value);
-								}}
 								{...register("unitprice")}
 							/>
 							<Text color="tomato">
@@ -108,7 +127,13 @@ export default function RegisterItemDrawer() {
 								placeholder="Quantidade"
 								color={textColor}
 								variant="filled"
-								value={quantity * price}
+								value={(price * quantity).toLocaleString(
+									"pt-br",
+									{
+										style: "currency",
+										currency: "BRL",
+									}
+								)}
 								readOnly
 								{...register("total")}
 							/>

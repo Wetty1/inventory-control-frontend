@@ -148,6 +148,7 @@ export default function ListPurchaseTable(props) {
 								{row.cells.map((cell, index) => {
 									let data = "";
 									if (cell.column.Header === "DATA") {
+										console.log(cell.value);
 										data = (
 											<Flex align="center">
 												<Text
@@ -156,7 +157,11 @@ export default function ListPurchaseTable(props) {
 													fontWeight="700"
 													cursor={"pointer"}
 												>
-													{cell.value}
+													{new Date(
+														cell.value
+													).toLocaleDateString(
+														"pt-br"
+													)}
 												</Text>
 											</Flex>
 										);
@@ -204,7 +209,7 @@ export default function ListPurchaseTable(props) {
 												<Button
 													onClick={() =>
 														setPurchaseSelected(
-															row.original.id
+															row.original
 														)
 													}
 												>

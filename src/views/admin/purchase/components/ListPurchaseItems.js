@@ -11,7 +11,7 @@ import {
 	Input,
 	Button,
 } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import {
 	useGlobalFilter,
 	usePagination,
@@ -24,6 +24,9 @@ import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
 import { MdEdit } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
+
+import Context from "../context/PurchaseContext";
+import { useState } from "react";
 
 const columnsDataColumns = [
 	{
@@ -52,16 +55,25 @@ const columnsDataColumns = [
 ];
 export default function ListPurchaseItemTable(props) {
 	const { tableData, setProductSelected } = props;
-
+	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
 	const columnsData = columnsDataColumns;
 
 	const columns = useMemo(() => columnsData, [columnsData]);
-	const data = useMemo(() => tableData, [tableData]);
+	const data = useMemo(
+		() => purchaseSelected.items,
+		[purchaseSelected.items]
+	);
+
+	const [items, setItems] = useState(data);
+
+	useEffect(() => {
+		console.log(purchaseSelected);
+	}, [purchaseSelected]);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data,
+			data: purchaseSelected["items"],
 		},
 		useGlobalFilter,
 		useSortBy,
@@ -190,7 +202,7 @@ export default function ListPurchaseItemTable(props) {
 														style: "currency",
 														currency: "BRL",
 													}
-												)}
+												) || ""}
 											</Text>
 										);
 									} else if (cell.column.Header === "ID") {

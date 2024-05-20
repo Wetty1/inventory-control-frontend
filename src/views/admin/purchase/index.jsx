@@ -42,8 +42,24 @@ export default function Settings() {
 		{
 			id: 1,
 			supplier: "Mix Mateus",
-			date: "01.01.2021",
+			date: new Date(2024, 4, 14),
 			total_value: 10.99,
+			items: [
+				{
+					id: 1,
+					product: "Cx Leite Betânia",
+					quantity: 12,
+					unitValue: 4.82,
+					totalValue: 12 * 4.82,
+				},
+				{
+					id: 2,
+					product: "Pct Alho poró",
+					quantity: 1,
+					unitValue: 32.99,
+					totalValue: 32.99,
+				},
+			],
 		},
 	]);
 
@@ -60,14 +76,16 @@ export default function Settings() {
 
 	return (
 		<Context.Provider value={[purchaseSelected, setPurchaseSelected]}>
-			{!purchaseSelected && (
-				<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-					<ListPurchaseTable tableData={purchases} />
-				</Box>
-			)}
-			{purchaseSelected && (
-				<PurchaseDetail purchaseId={purchaseSelected.id} />
-			)}
+			<>
+				{!purchaseSelected && (
+					<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+						<ListPurchaseTable tableData={purchases} />
+					</Box>
+				)}
+				{purchaseSelected && (
+					<PurchaseDetail purchaseId={purchaseSelected.id} />
+				)}
+			</>
 		</Context.Provider>
 	);
 }
