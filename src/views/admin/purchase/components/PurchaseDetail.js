@@ -36,7 +36,7 @@ import {
 } from "react-icons/md";
 import Context from "../context/PurchaseContext";
 
-export default function PurchaseDetail() {
+export default function PurchaseDetail(purchase) {
 	const textColor = useColorModeValue("secondaryGray.900", "white");
 	const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
@@ -72,6 +72,7 @@ export default function PurchaseDetail() {
 	const handleSave = useCallback(() => {}, []);
 
 	const handleDelete = useCallback(() => {}, []);
+
 
 	return (
 		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -160,7 +161,7 @@ export default function PurchaseDetail() {
 					<RegisterItemDrawer />
 				</Flex>
 				<Flex>
-					<ListPurchaseItemTable tableData={purchaseSelected.items} />
+					<ListPurchaseItemTable tableData={purchase} />
 				</Flex>
 			</Card>
 		</Box>

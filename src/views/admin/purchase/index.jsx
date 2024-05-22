@@ -83,7 +83,7 @@ export default function Settings() {
 					</Box>
 				)}
 				{purchaseSelected && (
-					<PurchaseDetail purchaseId={purchaseSelected.id} />
+					<PurchaseDetail purchase={purchaseSelected.items} />
 				)}
 			</>
 		</Context.Provider>

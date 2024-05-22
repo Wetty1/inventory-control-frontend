@@ -17,6 +17,7 @@ import {
 	usePagination,
 	useSortBy,
 	useTable,
+
 } from "react-table";
 
 // Custom components
@@ -54,6 +55,8 @@ const columnsDataColumns = [
 	},
 ];
 export default function ListPurchaseItemTable(props) {
+
+
 	const { tableData, setProductSelected } = props;
 	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
 	const columnsData = columnsDataColumns;
@@ -66,14 +69,10 @@ export default function ListPurchaseItemTable(props) {
 
 	const [items, setItems] = useState(data);
 
-	useEffect(() => {
-		console.log(purchaseSelected);
-	}, [purchaseSelected]);
-
 	const tableInstance = useTable(
 		{
 			columns,
-			data: purchaseSelected["items"],
+			data: props.tableData.purchase,
 		},
 		useGlobalFilter,
 		useSortBy,
