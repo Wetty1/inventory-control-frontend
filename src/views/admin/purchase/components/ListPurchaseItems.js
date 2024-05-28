@@ -17,7 +17,6 @@ import {
 	usePagination,
 	useSortBy,
 	useTable,
-
 } from "react-table";
 
 // Custom components
@@ -26,7 +25,7 @@ import Menu from "components/menu/MainMenu";
 import { MdEdit } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
 
-import Context from "../context/PurchaseContext";
+import PurchaseContext from "../context/PurchaseContext";
 import { useState } from "react";
 
 const columnsDataColumns = [
@@ -55,24 +54,19 @@ const columnsDataColumns = [
 	},
 ];
 export default function ListPurchaseItemTable(props) {
-
-
-	const { tableData, setProductSelected } = props;
-	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
+	const { items } = props;
+	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
 	const columnsData = columnsDataColumns;
+	// const [items, setItems] = useState(purchaseSelected.items);
 
 	const columns = useMemo(() => columnsData, [columnsData]);
-	const data = useMemo(
-		() => purchaseSelected.items,
-		[purchaseSelected.items]
-	);
-
-	const [items, setItems] = useState(data);
+	const data = useMemo(() => items, [items]);
 
 	const tableInstance = useTable(
 		{
 			columns,
-			data: props.tableData.purchase,
+			data,
+			autoResetHiddenColumns: true,
 		},
 		useGlobalFilter,
 		useSortBy,
@@ -91,6 +85,11 @@ export default function ListPurchaseItemTable(props) {
 
 	const textColor = useColorModeValue("secondaryGray.900", "white");
 	const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+
+	useEffect(() => {
+		console.log(page);
+	}, [page]);
+
 	return (
 		<Card
 			direction="column"

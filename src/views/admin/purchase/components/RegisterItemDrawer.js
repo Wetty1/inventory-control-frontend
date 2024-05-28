@@ -20,7 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { MdAddShoppingCart } from "react-icons/md";
-import Context from "../context/PurchaseContext";
+import { PurchaseContext } from "../context/PurchaseContext";
 
 const schema = yup.object({
 	quantity: yup.number().required("Campo obrigatório"),
@@ -28,17 +28,13 @@ const schema = yup.object({
 	total: yup.string().required("Campo obrigatório"),
 });
 
-export default function RegisterItemDrawer() {
+export default function RegisterItemDrawer(props) {
+	const { items, setItems } = props;
 	const textColor = useColorModeValue("black", "white");
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = useRef();
 
-	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
-
-	const [item, setItem] = useState({});
-
-	// const [quantity, setQuantity] = useState(1);
-	// const [price, setPrice] = useState(0);
+	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
 
 	const {
 		watch,
@@ -53,17 +49,17 @@ export default function RegisterItemDrawer() {
 	const price = watch("unitprice");
 
 	const onSubmit = (data) => {
-		let a = purchaseSelected;
-		a.items.push({
-			id: Math.random() * 100,
+		// addItemHandle(data);
+		let newItems = items;
+		newItems.push({
+			id: Math.round(Math.random() * 100),
 			quantity: data.quantity,
 			unitValue: data.unitprice,
 			totalValue: data.unitprice * data.quantity,
 		});
-
-		setPurchaseSelected(a);
+		setItems(newItems);
+		console.log("onSubmit");
 		onClose();
-		// console.log(purchaseSelected);
 	};
 
 	return (

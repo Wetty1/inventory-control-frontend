@@ -29,12 +29,13 @@ import {
 	BreadcrumbLink,
 	BreadcrumbSeparator,
 	Divider,
+	Button,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { Children, useCallback, useEffect, useState } from "react";
 import api from "api/index";
 import ListPurchaseTable from "./components/ListPurchaseTable";
 import PurchaseDetail from "./components/PurchaseDetail";
-import Context from "./context/PurchaseContext";
+import PurchaseContext from "./context/PurchaseContext";
 
 export default function Settings() {
 	const [purchaseSelected, setPurchaseSelected] = useState(null);
@@ -72,20 +73,29 @@ export default function Settings() {
 		// 	.catch((error) => {
 		// 		console.log(error);
 		// 	});
-	}, []);
+		console.log(purchaseSelected);
+	}, [purchaseSelected]);
 
 	return (
-		<Context.Provider value={[purchaseSelected, setPurchaseSelected]}>
-			<>
+		<>
+			<PurchaseContext.Provider
+				value={[purchaseSelected, setPurchaseSelected]}
+			>
 				{!purchaseSelected && (
 					<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-						<ListPurchaseTable tableData={purchases} />
+						<ListPurchaseTable
+							tableData={purchases}
+							setPurchaseSelected={setPurchaseSelected}
+						/>
 					</Box>
 				)}
 				{purchaseSelected && (
-					<PurchaseDetail purchase={purchaseSelected.items} />
+					<PurchaseDetail
+						purchaseSelected={purchaseSelected}
+						setPurchaseSelected={setPurchaseSelected}
+					/>
 				)}
-			</>
-		</Context.Provider>
+			</PurchaseContext.Provider>
+		</>
 	);
 }

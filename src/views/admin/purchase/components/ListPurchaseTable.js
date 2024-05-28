@@ -27,7 +27,7 @@ import Menu from "components/menu/MainMenu";
 import { MdAdd, MdAddShoppingCart, MdEdit } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
 
-import Context from "../context/PurchaseContext";
+import { PurchaseContext } from "../context/PurchaseContext";
 
 const columnsDataColumns = [
 	{
@@ -51,13 +51,13 @@ const columnsDataColumns = [
 	},
 ];
 export default function ListPurchaseTable(props) {
-	const { tableData } = props;
+	const { tableData, setPurchaseSelected } = props;
 
 	const columnsData = columnsDataColumns;
 
 	const columns = useMemo(() => columnsData, [columnsData]);
 	const data = useMemo(() => tableData, [tableData]);
-	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
+	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
 
 	const tableInstance = useTable(
 		{
@@ -148,7 +148,6 @@ export default function ListPurchaseTable(props) {
 								{row.cells.map((cell, index) => {
 									let data = "";
 									if (cell.column.Header === "DATA") {
-										console.log(cell.value);
 										data = (
 											<Flex align="center">
 												<Text

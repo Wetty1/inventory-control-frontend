@@ -34,45 +34,36 @@ import {
 	MdChevronLeft,
 	MdDelete,
 } from "react-icons/md";
-import Context from "../context/PurchaseContext";
+import { PurchaseContext } from "../context/PurchaseContext";
 
-export default function PurchaseDetail(purchase) {
+export default function PurchaseDetail(props) {
+	const { purchaseSelected, setPurchaseSelected } = props;
+	const [items, setItems] = useState(purchaseSelected.items);
+
 	const textColor = useColorModeValue("secondaryGray.900", "white");
 	const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
 	// const [purchase, setPurchase] = useState();
 
-	const [purchaseSelected, setPurchaseSelected] = useContext(Context);
+	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
 
-	useEffect(() => {
-		setPurchaseSelected({
-			id: 1,
-			supplier: "Mix Mateus",
-			date: new Date(2024, 4, 14),
-			total_value: 10.99,
-			items: [
-				{
-					id: 1,
-					product: "Cx Leite Betânia",
-					quantity: 12,
-					unitValue: 4.82,
-					totalValue: 12 * 4.82,
-				},
-				{
-					id: 2,
-					product: "Pct Alho poró",
-					quantity: 1,
-					unitValue: 32.99,
-					totalValue: 32.99,
-				},
-			],
-		});
-	}, []);
+	const addItemHandle = useCallback(
+		(data) => {
+			let newItems = items;
+			newItems.push({
+				id: Math.round(Math.random() * 100),
+				quantity: 2,
+				unitValue: 8,
+				totalValue: 8 * 2,
+			});
+			setItems(newItems);
+		},
+		[items, setItems]
+	);
 
 	const handleSave = useCallback(() => {}, []);
 
 	const handleDelete = useCallback(() => {}, []);
-
 
 	return (
 		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -158,10 +149,10 @@ export default function PurchaseDetail(purchase) {
 						</Stat>
 					</Box>
 
-					<RegisterItemDrawer />
+					<RegisterItemDrawer setItems={setItems} items={items} />
 				</Flex>
 				<Flex>
-					<ListPurchaseItemTable tableData={purchase} />
+					<ListPurchaseItemTable items={items} />
 				</Flex>
 			</Card>
 		</Box>
