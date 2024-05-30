@@ -21,9 +21,7 @@
 */
 
 // Chakra imports
-import {
-	Box,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { columnsDataColumns } from "views/admin/products/variables/columnsData";
 import React, { useEffect, useState } from "react";
 import ProductDetail from "./components/ProductDetail";
@@ -37,6 +35,7 @@ export default function Settings() {
 	useEffect(() => {
 		api.get(`/stock/products/list`)
 			.then((response) => {
+				console.log(response);
 				let datas = response.data;
 				const formattedData = datas.map((data) => {
 					const saldo = data.events.reduce((saldo, event) => {

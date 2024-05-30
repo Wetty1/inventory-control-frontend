@@ -45,22 +45,7 @@ export default function Settings() {
 			supplier: "Mix Mateus",
 			date: new Date(2024, 4, 14),
 			total_value: 10.99,
-			items: [
-				{
-					id: 1,
-					product: "Cx Leite Betânia",
-					quantity: 12,
-					unitValue: 4.82,
-					totalValue: 12 * 4.82,
-				},
-				{
-					id: 2,
-					product: "Pct Alho poró",
-					quantity: 1,
-					unitValue: 32.99,
-					totalValue: 32.99,
-				},
-			],
+			items: [],
 		},
 	]);
 
@@ -84,7 +69,8 @@ export default function Settings() {
 				{!purchaseSelected && (
 					<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
 						<ListPurchaseTable
-							tableData={purchases}
+							purchases={purchases}
+							setPurchases={setPurchases}
 							setPurchaseSelected={setPurchaseSelected}
 						/>
 					</Box>

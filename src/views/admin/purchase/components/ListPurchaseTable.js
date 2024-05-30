@@ -24,6 +24,7 @@ import {
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
+import RegisterPurchaseDrawer from "./RegisterPurchaseDrawer";
 import { MdAdd, MdAddShoppingCart, MdEdit } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
 
@@ -51,12 +52,12 @@ const columnsDataColumns = [
 	},
 ];
 export default function ListPurchaseTable(props) {
-	const { tableData, setPurchaseSelected } = props;
+	const { purchases, setPurchases, setPurchaseSelected } = props;
 
 	const columnsData = columnsDataColumns;
 
 	const columns = useMemo(() => columnsData, [columnsData]);
-	const data = useMemo(() => tableData, [tableData]);
+	const data = useMemo(() => purchases, [purchases]);
 	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
 
 	const tableInstance = useTable(
@@ -101,9 +102,10 @@ export default function ListPurchaseTable(props) {
 					<option>Crescente</option>
 					<option>Decrescente</option>
 				</Select>
-				<Button px="5px">
-					<MdAddShoppingCart />
-				</Button>
+				<RegisterPurchaseDrawer
+					purchases={purchases}
+					setPurchases={setPurchases}
+				/>
 			</Flex>
 			<Table
 				{...getTableProps()}
@@ -186,7 +188,13 @@ export default function ListPurchaseTable(props) {
 												fontSize="sm"
 												fontWeight="700"
 											>
-												{cell.value}
+												{cell.value.toLocaleString(
+													"pt-br",
+													{
+														style: "currency",
+														currency: "BRL",
+													}
+												)}
 											</Text>
 										);
 									} else if (cell.column.Header === "ID") {

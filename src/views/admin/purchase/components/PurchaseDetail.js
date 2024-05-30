@@ -43,27 +43,11 @@ export default function PurchaseDetail(props) {
 	const textColor = useColorModeValue("secondaryGray.900", "white");
 	const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
-	// const [purchase, setPurchase] = useState();
-
-	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
-
-	const addItemHandle = useCallback(
-		(data) => {
-			let newItems = items;
-			newItems.push({
-				id: Math.round(Math.random() * 100),
-				quantity: 2,
-				unitValue: 8,
-				totalValue: 8 * 2,
-			});
-			setItems(newItems);
-		},
-		[items, setItems]
-	);
-
 	const handleSave = useCallback(() => {}, []);
 
 	const handleDelete = useCallback(() => {}, []);
+
+	console.log({ purchaseSelected, items });
 
 	return (
 		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -136,7 +120,7 @@ export default function PurchaseDetail(props) {
 						<Stat mx="25px" my="25px">
 							<StatLabel>Total</StatLabel>
 							<StatNumber>
-								{purchaseSelected.items
+								{items
 									.reduce(
 										(acc, item) => acc + item.totalValue,
 										0
@@ -152,7 +136,7 @@ export default function PurchaseDetail(props) {
 					<RegisterItemDrawer setItems={setItems} items={items} />
 				</Flex>
 				<Flex>
-					<ListPurchaseItemTable items={items} />
+					<ListPurchaseItemTable setItems={setItems} items={items} />
 				</Flex>
 			</Card>
 		</Box>

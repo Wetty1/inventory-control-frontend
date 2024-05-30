@@ -28,11 +28,9 @@ import { IoMdEye } from "react-icons/io";
 import PurchaseContext from "../context/PurchaseContext";
 import { useState } from "react";
 
+import RegisterItemDrawer from "../components/RegisterItemDrawer";
+
 const columnsDataColumns = [
-	{
-		Header: "ID",
-		accessor: "id",
-	},
 	{
 		Header: "PRODUTO",
 		accessor: "product",
@@ -54,7 +52,7 @@ const columnsDataColumns = [
 	},
 ];
 export default function ListPurchaseItemTable(props) {
-	const { items } = props;
+	const { items, setItems } = props;
 	// const [purchaseSelected, setPurchaseSelected] = useContext(PurchaseContext);
 	const columnsData = columnsDataColumns;
 	// const [items, setItems] = useState(purchaseSelected.items);
@@ -85,10 +83,6 @@ export default function ListPurchaseItemTable(props) {
 
 	const textColor = useColorModeValue("secondaryGray.900", "white");
 	const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-
-	useEffect(() => {
-		console.log(page);
-	}, [page]);
 
 	return (
 		<Card
@@ -163,7 +157,7 @@ export default function ListPurchaseItemTable(props) {
 													fontSize="sm"
 													fontWeight="700"
 												>
-													{cell.value}
+													{cell.value.name}
 												</Text>
 											</Flex>
 										);
@@ -203,25 +197,14 @@ export default function ListPurchaseItemTable(props) {
 												) || ""}
 											</Text>
 										);
-									} else if (cell.column.Header === "ID") {
-										data = (
-											<Flex align="center">
-												<Text
-													me="10px"
-													color={textColor}
-													fontSize="sm"
-													fontWeight="700"
-												>
-													{cell.value}
-												</Text>
-											</Flex>
-										);
 									} else if (cell.column.Header === "AÇÕES") {
 										data = (
 											<Flex align="center">
-												<Button>
-													<MdEdit />
-												</Button>
+												<RegisterItemDrawer
+													items={items}
+													setItems={setItems}
+													itemSelected={row.original}
+												/>
 											</Flex>
 										);
 									}
