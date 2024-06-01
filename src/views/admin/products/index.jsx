@@ -21,7 +21,7 @@
 */
 
 // Chakra imports
-import { Box } from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import { columnsDataColumns } from "views/admin/products/variables/columnsData";
 import React, { useEffect, useState } from "react";
 import ProductDetail from "./components/ProductDetail";
@@ -31,6 +31,7 @@ import ListProductTable from "./components/ListProductTable";
 export default function Settings() {
 	const [productSelected, setProductSelected] = useState("");
 	const [products, setProducts] = useState([]);
+	const toast = useToast();
 	// Chakra Color Mode
 	useEffect(() => {
 		api.get(`/stock/products/list`)
@@ -63,9 +64,13 @@ export default function Settings() {
 				setProducts(formattedData);
 			})
 			.catch((error) => {
-				console.log(error);
+				if (error.request?.status === 401) {
+					localStorage.removeItem("token");
+
+					window.location.replace("/#/auth");
+				}
 			});
-	}, []);
+	}, [toast]);
 
 	return (
 		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
