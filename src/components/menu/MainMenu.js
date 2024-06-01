@@ -2,9 +2,7 @@ import React from "react";
 
 // Chakra imports
 import {
-  Icon,
   Flex,
-  Text,
   Menu,
   MenuButton,
   MenuItem,
@@ -12,14 +10,9 @@ import {
   useDisclosure,
   useColorModeValue,
 } from "@chakra-ui/react";
-// Assets
-import {
-  MdOutlineMoreHoriz,
-  MdOutlinePerson,
-  MdOutlineCardTravel,
-  MdOutlineLightbulb,
-  MdOutlineSettings,
-} from "react-icons/md";
+
+import { RegisterProductDrawer } from "components/drawer/RegisterProductDrawer";
+import { RegisterCategoryDrawer } from "components/drawer/RegisterCategoryDrawer";
 
 export default function Banner(props) {
   const { ...rest } = props;
@@ -29,7 +22,6 @@ export default function Banner(props) {
     { color: "secondaryGray.900", bg: "unset" },
     { color: "secondaryGray.500", bg: "unset" }
   );
-  const iconColor = useColorModeValue("brand.500", "white");
   const bgList = useColorModeValue("white", "whiteAlpha.100");
   const bgShadow = useColorModeValue(
     "14px 17px 40px 4px rgba(112, 144, 176, 0.08)",
@@ -61,13 +53,14 @@ export default function Banner(props) {
         _hover={bgHover}
         _focus={bgFocus}
         _active={bgFocus}
-        w='37px'
+        w='auto'
         h='37px'
+        padding='10px'
         lineHeight='100%'
         onClick={onOpen1}
         borderRadius='10px'
         {...rest}>
-        <Icon as={MdOutlineMoreHoriz} color={iconColor} w='24px' h='24px' />
+        Cadastrar
       </MenuButton>
       <MenuList
         w='150px'
@@ -93,50 +86,7 @@ export default function Banner(props) {
           }}
           mb='10px'>
           <Flex align='center'>
-            <Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 1
-            </Text>
-          </Flex>
-        </MenuItem>
-        <MenuItem
-          transition='0.2s linear'
-          p='0px'
-          borderRadius='8px'
-          color={textColor}
-          _hover={textHover}
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}
-          mb='10px'>
-          <Flex align='center'>
-            <Icon as={MdOutlineCardTravel} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 2
-            </Text>
-          </Flex>
-        </MenuItem>
-        <MenuItem
-          transition='0.2s linear'
-          p='0px'
-          borderRadius='8px'
-          color={textColor}
-          _hover={textHover}
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}
-          mb='10px'>
-          <Flex align='center'>
-            <Icon as={MdOutlineLightbulb} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 3
-            </Text>
+            <RegisterProductDrawer />
           </Flex>
         </MenuItem>
         <MenuItem
@@ -152,10 +102,7 @@ export default function Banner(props) {
             bg: "transparent",
           }}>
           <Flex align='center'>
-            <Icon as={MdOutlineSettings} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 4
-            </Text>
+            <RegisterCategoryDrawer />
           </Flex>
         </MenuItem>
       </MenuList>
