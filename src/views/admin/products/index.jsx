@@ -22,11 +22,11 @@
 
 // Chakra imports
 import { Box, useToast } from "@chakra-ui/react";
-import { columnsDataColumns } from "views/admin/products/variables/columnsData";
 import React, { useEffect, useState } from "react";
 import ProductDetail from "./components/ProductDetail";
 import api from "api/index";
 import ListProductTable from "./components/ListProductTable";
+import ProductContext from "./context/ProductContext";
 
 export default function Settings() {
 	const [productSelected, setProductSelected] = useState("");
@@ -34,33 +34,25 @@ export default function Settings() {
 	const toast = useToast();
 	// Chakra Color Mode
 	useEffect(() => {
-		api.get(`/stock/products/list`)
+		api.get(`/stock/products/list-summary`)
 			.then((response) => {
 				console.log(response);
 				let datas = response.data;
 				const formattedData = datas.map((data) => {
-					const saldo = data.events.reduce((saldo, event) => {
-						if (event.type === "entrada") {
-							saldo += event.quantity;
-						}
-						if (event.type === "saida") {
-							saldo -= event.quantity;
-						}
-						return saldo;
-					}, 0);
-
+					console.log(data);
 					return {
 						id: data.id,
 						name: data.name,
-						balance: saldo,
+						balance: data.balance,
 						min: "-",
-						category: data.category.name,
-						last_price:
-							data.purchases.length > 0
-								? data.purchases[0].unit_value
-								: "-",
+						category: data.categoryname,
+						last_price: data.lastprice.toLocaleString("pt-br", {
+							style: "currency",
+							currency: "BRL",
+						}),
 					};
 				});
+				console.log(formattedData);
 				setProducts(formattedData);
 			})
 			.catch((error) => {
@@ -73,19 +65,20 @@ export default function Settings() {
 	}, [toast]);
 
 	return (
-		<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-			{productSelected ? (
-				<ProductDetail
-					product={productSelected}
-					setProductSelected={setProductSelected}
-				/>
-			) : (
-				<ListProductTable
-					columnsData={columnsDataColumns}
-					tableData={products}
-					setProductSelected={setProductSelected}
-				/>
-			)}
-		</Box>
+		<ProductContext.Provider value={[products, setProducts]}>
+			<Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+				{productSelected ? (
+					<ProductDetail
+						product={productSelected}
+						setProductSelected={setProductSelected}
+					/>
+				) : (
+					<ListProductTable
+						tableData={products}
+						setProductSelected={setProductSelected}
+					/>
+				)}
+			</Box>
+		</ProductContext.Provider>
 	);
 }

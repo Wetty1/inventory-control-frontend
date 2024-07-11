@@ -9,8 +9,9 @@ import {
 	Tr,
 	useColorModeValue,
 	Input,
+	Button,
 } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import {
 	useGlobalFilter,
 	usePagination,
@@ -20,16 +21,49 @@ import {
 
 // Custom components
 import Card from "components/card/Card";
-import Menu from "components/menu/MainMenu";
-export default function ListProductTable(props) {
-	const { columnsData, tableData, setProductSelected } = props;
+import Menu from "./MenuRegisters";
+import { IoMdEye } from "react-icons/io";
 
-	const columns = useMemo(() => columnsData, [columnsData]);
+import ProductContext from "../context/ProductContext";
+
+const columnsData = [
+	{
+		Header: "NOME",
+		accessor: "name",
+	},
+	{
+		Header: "CATEGORIA",
+		accessor: "category",
+	},
+	{
+		Header: "SALDO",
+		accessor: "balance",
+	},
+	{
+		Header: "MINIMO",
+		accessor: "min",
+	},
+	{
+		Header: "ULTIMO PRECO",
+		accessor: "last_price",
+	},
+	{
+		Header: "AÇÕES",
+		accessor: "action",
+	},
+];
+
+export default function ListProductTable(props) {
+	const { tableData, setProductSelected } = props;
+
+	// const columns = useMemo(() => columnsData, [columnsData]);
 	const data = useMemo(() => tableData, [tableData]);
+
+	const [products, setProducts] = useContext(ProductContext);
 
 	const tableInstance = useTable(
 		{
-			columns,
+			columns: columnsData,
 			data,
 		},
 		useGlobalFilter,
@@ -83,7 +117,7 @@ export default function ListProductTable(props) {
 									)}
 									pe="10px"
 									key={index}
-									borderColor={borderColor}
+									borderColor={textColor}
 								>
 									<Flex
 										justify="space-between"
@@ -112,12 +146,6 @@ export default function ListProductTable(props) {
 													color={textColor}
 													fontSize="sm"
 													fontWeight="700"
-													cursor={"pointer"}
-													onClick={() =>
-														setProductSelected(
-															row.original
-														)
-													}
 												>
 													{cell.value}
 												</Text>
@@ -159,7 +187,13 @@ export default function ListProductTable(props) {
 													fontSize="sm"
 													fontWeight="700"
 												>
-													{cell.value}
+													{cell.value.toLocaleString(
+														"pt-br",
+														{
+															style: "currency",
+															currency: "BRL",
+														}
+													)}
 												</Text>
 											</Flex>
 										);
@@ -176,6 +210,20 @@ export default function ListProductTable(props) {
 												>
 													{cell.value}
 												</Text>
+											</Flex>
+										);
+									} else if (cell.column.Header === "AÇÕES") {
+										data = (
+											<Flex align="center">
+												<Button
+													onClick={() =>
+														setProductSelected(
+															row.original
+														)
+													}
+												>
+													<IoMdEye />
+												</Button>
 											</Flex>
 										);
 									}

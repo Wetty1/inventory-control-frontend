@@ -83,7 +83,14 @@ export default function ProductDetail({ product, setProductSelected }) {
 						/>
 					}
 					name="Ultimo custo"
-					value={dollarToBRL(product?.last_price)}
+					value={Number(
+						product?.last_price
+							.replace("$", "")
+							.toLocaleString("pt-br", {
+								style: "currency",
+								currency: "BRL",
+							})
+					)}
 				/>
 				<MiniStatistics
 					startContent={
