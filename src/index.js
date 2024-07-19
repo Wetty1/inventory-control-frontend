@@ -7,12 +7,13 @@ import AdminLayout from "layouts/admin";
 import RTLLayout from "layouts/rtl";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "theme/theme";
-import { ThemeEditorProvider } from "@hypertheme-editor/chakra-ui";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "lib/react-query";
 
 ReactDOM.render(
 	<ChakraProvider theme={theme}>
 		<React.StrictMode>
-			<ThemeEditorProvider>
+			<QueryClientProvider client={queryClient}>
 				<HashRouter>
 					<Switch>
 						<Route path={`/auth`} component={AuthLayout} />
@@ -21,7 +22,7 @@ ReactDOM.render(
 						<Redirect from="/" to="/auth" />
 					</Switch>
 				</HashRouter>
-			</ThemeEditorProvider>
+			</QueryClientProvider>
 		</React.StrictMode>
 	</ChakraProvider>,
 	document.getElementById("root")
